@@ -19,8 +19,31 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        include:
+          # windows
+          - os: windows-2022
+            arch: x64
+          - os: windows-2025
+            arch: x64
+          - os: windows-2022
+            arch: x86
+          - os: windows-11-arm
+            arch: arm64
+          # macos
+          - os: macos-15-intel
+            arch: x64
+          - os: macos-14
+            arch: arm64
+          # linux
+          - os: ubuntu-22.04
+            arch: x64
+          - os: ubuntu-24.04
+            arch: x64
+          - os: ubuntu-22.04-arm
+            arch: arm64
+          - os: ubuntu-24.04-arm
+            arch: arm64
         node: [20, 22, 24]
-        os: [ubuntu-latest, windows-latest]
 
     steps:
       - name: Clone repository
@@ -32,6 +55,7 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node }}
+          architecture: ${{ matrix.arch }}
           cache: npm
 
       - name: Install npm dependencies
